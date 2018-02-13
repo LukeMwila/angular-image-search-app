@@ -9,13 +9,13 @@ import { ImageService } from '../shared/image.service';
 export class ImageListComponent implements OnInit {
   images: any[];
   imagesFound: boolean = false
+  searching: boolean = false
 
   constructor(private _imageService : ImageService) {}
 
   handleSuccess(data){
     this.images = data.hits
     this.imagesFound = true
-    console.log(data.hits)
   }
 
   handleError(error){
@@ -23,10 +23,11 @@ export class ImageListComponent implements OnInit {
   }
 
   searchImages(query: string){
+    this.searching = true
     return this._imageService.getImage(query).subscribe(
       data => this.handleSuccess(data),
       error => this.handleError(error),
-      () => console.log('Request complete')
+      () => this.searching = false
     )
   }
 
